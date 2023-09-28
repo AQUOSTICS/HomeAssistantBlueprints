@@ -17,13 +17,13 @@ trigger:
   - type: state
     platform: state
     entity_id: !input contact_sensor
-      from: "on"
-      to: "off"
+    from: "on"
+    to: "off"
   - type: state
     platform: state
     entity_id: !input lock
-      from: locked
-      to: unlocked
+    from: locked
+    to: unlocked
 action:
   - delay:
       hours: 0
