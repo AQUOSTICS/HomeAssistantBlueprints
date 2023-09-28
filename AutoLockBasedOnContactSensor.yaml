@@ -17,7 +17,9 @@ blueprint:
         entity:
           domain: binary_sensor
           device_class: contact
-          
+
+mode: single
+
 trigger:
   - platform: state
     entity_id:
@@ -29,6 +31,7 @@ trigger:
       - !input lock
     from: locked
     to: unlocked
+
 action:
   - delay:
       hours: 0
@@ -47,4 +50,4 @@ action:
     then:
       - service: lock.lock
         target:
-          entity_id: lock.front_door_lock
+          entity_id: !input lock
