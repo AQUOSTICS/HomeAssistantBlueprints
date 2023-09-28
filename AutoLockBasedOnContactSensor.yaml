@@ -6,6 +6,9 @@ blueprint:
     lock:
       name: Lock
       description: This is the door lock that's being automitcally locked
+      selector:
+        entity:
+          domain: lock
     contact_sensor:
       name: Contact Sensor
       description: This is the contact sensor of the door
@@ -14,14 +17,12 @@ blueprint:
           domain: binary_sensor
           device_class: contact
 trigger:
-  - type: state
-    platform: state
+  - platform: state
     entity_id:
       - !input contact_sensor
     from: "on"
     to: "off"
-  - type: state
-    platform: state
+  - platform: state
     entity_id:
       - !input lock
     from: locked
