@@ -9,13 +9,13 @@ blueprint:
       selector:
         entity:
           domain: lock
+          
     contact_sensor:
       name: Contact Sensor
       description: This is the contact sensor of the door
       selector:
         entity:
-          domain:
-            - binary_sensor
+          domain: binary_sensor
           device_class: contact
           
 trigger:
