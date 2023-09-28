@@ -14,7 +14,10 @@ blueprint:
       description: This is the contact sensor of the door
       selector:
         entity:
-          domain: binary_sensor
+          domain:
+            - binary_sensor
+          device_class: contact
+          
 trigger:
   - platform: state
     entity_id:
