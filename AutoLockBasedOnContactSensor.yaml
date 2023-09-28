@@ -24,8 +24,7 @@ trigger:
   - platform: state
     entity_id:
       - !input contact_sensor
-    from: "on"
-    to: "off"
+    to: off
   - platform: state
     entity_id:
       - !input lock
@@ -42,7 +41,7 @@ action:
       - condition: state
         entity_id:
           - !input contact_sensor
-        state: "off"
+        state: off
       - condition: state
         entity_id:
           - !input lock
