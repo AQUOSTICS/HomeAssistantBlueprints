@@ -1,0 +1,44 @@
+blueprint:
+  name: Automatic Lock Door Based on Contact Sensor
+  description: Lock the door after a certain period of time
+  domain: automation
+  input:
+    lock:
+      name: Lock
+      description: This is the door lock that's being automitcally locked
+    contact_sensor:
+      name: Contact Sensor
+      description: This is the contact sensor of the door
+      selector:
+        entity:
+          domain: binary_sensor
+          device_class: contact
+    trigger:
+trigger:
+  - type: state
+    platform: state
+    entity_id: !input contact_sensor
+      from: "on"
+      to: "off"
+  - type: state
+    platform: state
+    entity_id: !input lock
+      from: locked
+      to: unlocked
+action:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 15
+      milliseconds: 0
+  - if:
+      - condition: state
+        entity_id: !input contact_sensor
+        state: "off"
+      - condition: state
+        entity_id: !input lock
+        state: unlocked
+    then:
+      - service: lock.lock
+        target:
+          entity_id: lock.front_door_lock
