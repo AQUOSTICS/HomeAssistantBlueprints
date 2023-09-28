@@ -3,50 +3,48 @@ blueprint:
   description: Lock the door after a certain period of time
   domain: automation
   input:
-    lock:
-      name: Lock
-      description: This is the door lock that's being automitcally locked
+    wait_time:
+      name: Wait Time
+      description: How long until it automitically locks itself?
+      selector:
+        duration:
+    door_lock:
+      name: Door Lock
+      description: This is the door lock that's being managed by the script.
       selector:
         entity:
           domain: lock
-          
-    contact_sensor:
-      name: Contact Sensor
-      description: This is the contact sensor of the door
+    door_contact_sensor:
+      name: Door Sensor
+      description: This is the binary sensor for the door(Usually a contact sensor).
       selector:
         entity:
           domain: binary_sensor
-          device_class: contact
+          device_class: door
+          multiple: false
 
 mode: single
-
+condition: []
 trigger:
   - platform: state
-    entity_id:
-      - !input contact_sensor
-    to: off
+    entity_id: !input door_contact_sensor
+    from: 'on'
+    to: 'off'
   - platform: state
-    entity_id:
-      - !input lock
+    entity_id: !input door_lock
     from: locked
     to: unlocked
-
 action:
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 15
-      milliseconds: 0
+  - delay: !input wait_time
   - if:
       - condition: state
-        entity_id:
-          - !input contact_sensor
-        state: off
+        entity_id: !input door_contact_sensor
+        state: 'off'
       - condition: state
-        entity_id:
-          - !input lock
+        entity_id: !input door_lock
         state: unlocked
     then:
-      - service: lock.lock
-        target:
-          entity_id: !input lock
+      - device_id: '{{ device_id(!input door_lock) }}'
+        domain: lock
+        entity_id: !input door_lock
+        type: lock
